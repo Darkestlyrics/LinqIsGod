@@ -1,71 +1,166 @@
-﻿using System.Linq;
+﻿using System.Collections;
+using System.Linq;
 
 namespace LinqIsGod
 {
     public static class StringUtils
     {
-        public static string linqSubstring(this string String, int start, int end)
+
+        /// <summary>
+        ///  Returns a Substring of the specified string
+        /// </summary>
+        /// <param name="string">The Source String</param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <returns></returns>
+        public static string LinqSubstring(this string @string, int start, int end)
         {
-            return string.Join("", String.ToList()
+            return string.Join("", @string.ToList()
                 .GetRange(start, end - start));
         }
 
-        public static long linqLength(this string String)
+        /// <summary>
+        /// Returns the length of the specified string
+        /// </summary>
+        /// <param name="string">The Source String</param>
+        /// <returns>the length of the string</returns>
+        public static int LinqLength(this string @string)
         {
-            return String.ToCharArray().GetUpperBound(0) + 1;
+            return @string.Select(o => o).Count();
         }
 
-        public static int linqIndexOf(this string String, char c)
+        /// <summary>
+        /// Returns the index of the first instance of the specified character in the string
+        /// </summary>
+        /// <param name="string">The Source String</param>
+        /// <param name="character">The character to check for</param>
+        /// <returns>the first index of the character</returns>
+        public static int LinqIndexOf(this string @string, char character)
         {
-            return String.ToList().FindIndex(o =>
-                (o == c));
+            return @string.ToList().FindIndex(o =>
+                (o == character));
 
         }
 
-
-        public static bool linqStartsWith(this string String, char c)
+        /// <summary>
+        ///  Returns whether the string starts with a specified character
+        /// </summary>
+        /// <param name="string">The Source String</param>
+        /// <param name="character">The character to check for</param>
+        /// <returns><see cref="bool"/> value</returns>
+        public static bool LinqStartsWith(this string @string, char character)
         {
-            return String.ToCharArray().First() == c;
+            return @string.ToCharArray().First() == character;
         }
 
-
-        public static bool linqEndsWith(this string String, char c)
+        /// <summary>
+        ///  Returns whether the string ends with a specified character
+        /// </summary>
+        /// <param name="string">The Source String</param>
+        /// <param name="character">The character to check for</param>
+        /// <returns></returns>
+        public static bool LinqEndsWith(this string @string, char character)
         {
-            return String.ToCharArray().Last() == c;
+            return @string.ToCharArray().Last() == character;
         }
 
-        public static string linqRemove(this string String, char c)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="string">The Source String</param>
+        /// <param name="character">The character to check for</param>
+        /// <returns></returns>
+        public static string LinqRemove(this string @string, char character)
         {
-            return string.Join("", String.ToCharArray()
-                .Where(o => o != c)
+            return string.Join("", @string.ToCharArray()
+                .Where(o => o != character)
                 .Select(o => o));
         }
 
-        public static string linqPadLeft(this string String, char c, int count)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="string">The Source String</param>
+        /// <param name="character">The character to replace</param>
+        /// <param name="replacementCharacter">The character to replace with</param>
+        /// <returns></returns>
+        public static string LinqReplace(this string @string, char character, char replacementCharacter)
         {
-            String.ToList()
-                .InsertRange(0, Enumerable.Repeat(c, count));
-            return string.Join("", String);
+            return string.Join("", @string.ToCharArray()
+                .Where(o => o == character)
+                .Select(o => replacementCharacter)
+                .ToArray());
         }
 
-        public static string linqPadRight(this string String, char c, int count)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="string">The Source String</param>
+        /// <param name="length"></param>
+        /// <param name="paddingChar"></param>
+        /// <returns></returns>
+        public static string LinqPadLeft(this string @string, int length, char paddingChar)
         {
-            String.ToList()
-                .AddRange(Enumerable.Repeat(c, count));
-            return string.Join("", String);
+            @string.ToList()
+                .InsertRange(0, Enumerable.Repeat(paddingChar, @string.LinqLength() - length));
+            return string.Join("", @string);
         }
 
-        public static string linqTrim(this string String)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="string">The Source String</param>
+        /// <param name="length"></param>
+        /// <param name="paddingChar"></param>
+        /// <returns></returns>
+        public static string LinqPadRight(this string @string, int length, char paddingChar)
         {
-            return String.linqRemove('\0');
+            @string.ToList()
+                .InsertRange(@string.LinqLength(), Enumerable.Repeat(paddingChar, @string.LinqLength() - length));
+            return string.Join("", @string);
         }
 
-        public static string linqTimStart(this string String)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="string">The Source String</param>
+        /// <returns></returns>
+        public static string LinqTrim(this string @string)
+        {
+            return @string.LinqRemove('\0');
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="string">The Source String</param>
+        /// <returns></returns>
+        public static string LinqTimStart(this string @string)
         {
             return "";
         }
 
-        public static string linqTrimEnd(this string String)
+        /// <summary>
+        /// Trims the end of the string of empty spaces
+        /// </summary>
+        /// <param name="string">The Source String</param>
+        /// <returns></returns>
+        public static string LinqTrimEnd(this string @string)
+        {
+            return "";
+        }
+
+        public static string[] LinqSplit(this string @string,char splitChar)
+        {
+            return "";//@string.LinqIndexOf(splitChar)
+        }
+
+        public static string LinqReverse(this string @string)
+        {
+            return string.Join(',',@string.ToCharArray().Reverse().Select(o=>o).ToArray());
+        }
+
+        public static string LinqJoin(this string @string,char joinchar,IEnumerable<char> source)
         {
             return "";
         }
